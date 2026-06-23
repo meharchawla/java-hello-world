@@ -5,6 +5,10 @@ on:
   push:
     branches: [ "main" ]
 
+# Set global environment settings for Node compatibility
+env:
+  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: "true"
+  
 jobs:
   build:
     name: Compile and Test
