@@ -1,0 +1,52 @@
+name: Java CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Compile and Test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: 'maven'
+
+    - name: Build Application with Maven
+      run: mvn clean package
+
+    - name: Save Compiled Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: java-executable
+        path: target/java-hello-world-1.0.0.jar
+
+  deploy:
+    name: Package Deployment
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Download Built Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: java-executable
+
+    - name: Create Production Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: v${{ github.run_number }}
+        name: Release Version v${{ github.run_number }}
+        files: java-hello-world-1.0.0.jar
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
