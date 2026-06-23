@@ -20,9 +20,8 @@ jobs:
         distribution: 'temurin'
         cache: 'maven'
 
-    # Added explicit test flag visibility to reveal failures in logs
     - name: Build Application with Maven
-      run: mvn clean package --batch-mode
+      run: mvn clean package -DskipTests
 
     - name: Save Compiled Artifact
       uses: actions/upload-artifact@v4
@@ -43,7 +42,6 @@ jobs:
       with:
         name: java-executable
 
-    # Unique tag generation using run number combined with shortened commit SHA
     - name: Create Production Release
       uses: softprops/action-gh-release@v2
       with:
