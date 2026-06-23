@@ -1,14 +1,13 @@
-
 name: Java CI/CD Pipeline
 
 on:
   push:
     branches: [ "main" ]
 
-# Set global environment settings for Node compatibility
+# Force GitHub actions to run on the newer Node 24 engine
 env:
-  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: "true"
-  
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 jobs:
   build:
     name: Compile and Test
